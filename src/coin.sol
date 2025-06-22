@@ -5,7 +5,7 @@ contract Coin{
     //state
     address public minter;
 
-    mapping(address => uint) public Walletbalance;
+    mapping(address => uint) public walletbalance;
 
     //error
     error insufficientFunds(uint availableBalance, uint requestdAmount);
@@ -18,4 +18,10 @@ contract Coin{
         minter = msg.sender;
     }
 
+
+ function mintCoin(address to, uint amount) external{
+    require(minter == msg.sender, "Not Owner");
+
+    walletbalance[msg.sender] += amount;
+ }
 }
