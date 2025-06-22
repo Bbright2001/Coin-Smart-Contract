@@ -24,4 +24,15 @@ contract Coin{
 
     walletbalance[msg.sender] += amount;
  }
+
+ function send (address to, uint amount) external{
+    if (amount > walletbalance[msg.sender] ) {
+
+        revert insufficientFunds ( walletbalance[msg.sender], amount );
+    }
+
+    walletbalance[msg.sender] -= amount;
+    walletbalance[to] += amount;
+    emit sent ( to, amount );
+ }
 }
