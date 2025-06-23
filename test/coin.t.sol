@@ -28,10 +28,27 @@ contract testCoin is Test{
             assertEq(walletBalance, 3 ether);
     }
 
-    function testNOtOwner() external{
+    function testNotOwner() external{
             vm.prank(user);
             vm.expectRevert("Not Owner");
             mint.mintCoin(4 ether);
     }
+
+    function testInsufficientBalance() external{
+            mint.mintCoin(10 ether);
+
+            vm.expectRevert(
+                abi.encodeWithSelector(
+                    Coin.insufficientFunds.selector,
+                    10 ether,
+                    12 ether 
+                )
+            );
+            mint.send(user, 12 ether);
+
+            uint walletBalance = mint.getUserBalance(user);
+            assertEq(walletBalance, 0 ether);
+    }
+   
 
 }
