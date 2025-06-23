@@ -5,11 +5,12 @@ import {Test, console} from "forge-std/Test.sol";
 import {Coin} from "../src/coin.sol";
 
 contract testCoin is Test{
-    Coin public mint;
-
+          Coin public mint;
+           address public user;
 
     function setUp() public{
-        mint = new Coin();
+           mint = new Coin();
+           user = address(0x1);
     }
 
 
@@ -18,6 +19,13 @@ contract testCoin is Test{
             mint.mintCoin( 2 ether);
             uint walletBalance = mint.getUserBalance(address(this));
             assertEq(walletBalance, 2 ether);
+    }
+
+    function testSend()external{
+            mint.mintCoin(5 ether);
+            mint.send(user, 3 ether);
+            uint walletBalance = mint.getUserBalance(user);
+            assertEq(walletBalance, 3 ether);
     }
 
 }

@@ -19,13 +19,13 @@ contract Coin{
     }
 
 
- function mintCoin( uint amount) external{
+ function mintCoin(uint amount) external{
     require(minter == msg.sender, "Not Owner");
 
     walletBalance[msg.sender] += amount;
  }
 
- function send (address to, uint amount) external{
+ function send(address to, uint amount) external{
     if (amount > walletBalance[msg.sender] ) {
 
         revert insufficientFunds ( walletBalance[msg.sender], amount );
@@ -33,10 +33,10 @@ contract Coin{
 
     walletBalance[msg.sender] -= amount;
     walletBalance[to] += amount;
-    emit sent ( to, amount );
+    emit sent (to, amount);
  }
 
- function getUserBalance (address to) public view returns (uint256) {
+ function getUserBalance(address to) public view returns (uint256) {
     return walletBalance[to];
  }
 }
