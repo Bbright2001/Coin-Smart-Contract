@@ -5,7 +5,7 @@ contract Coin{
     //state
     address public minter;
 
-    mapping(address => uint) public walletbalance;
+    mapping(address => uint) public walletBalance;
 
     //error
     error insufficientFunds(uint availableBalance, uint requestdAmount);
@@ -19,20 +19,24 @@ contract Coin{
     }
 
 
- function mintCoin(address to, uint amount) external{
+ function mintCoin( uint amount) external{
     require(minter == msg.sender, "Not Owner");
 
-    walletbalance[msg.sender] += amount;
+    walletBalance[msg.sender] += amount;
  }
 
  function send (address to, uint amount) external{
-    if (amount > walletbalance[msg.sender] ) {
+    if (amount > walletBalance[msg.sender] ) {
 
-        revert insufficientFunds ( walletbalance[msg.sender], amount );
+        revert insufficientFunds ( walletBalance[msg.sender], amount );
     }
 
-    walletbalance[msg.sender] -= amount;
-    walletbalance[to] += amount;
+    walletBalance[msg.sender] -= amount;
+    walletBalance[to] += amount;
     emit sent ( to, amount );
+ }
+
+ function getUserBalance (address to) public view returns (uint256) {
+    return walletBalance[to];
  }
 }
