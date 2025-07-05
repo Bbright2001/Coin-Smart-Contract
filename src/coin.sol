@@ -9,6 +9,7 @@ contract Coin{
 
     //error
     error insufficientFunds(uint availableBalance, uint requestdAmount);
+    error onlyOwner();
 
     //events
     event sent(address to, uint amountSent);
@@ -20,7 +21,7 @@ contract Coin{
 
 
  function mintCoin(uint amount) external{
-    require(minter == msg.sender, "Not Owner");
+        if( !(minter == msg.sender) ) revert onlyOwner();
 
     walletBalance[msg.sender] += amount;
  }
